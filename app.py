@@ -75,14 +75,26 @@ def predict():
             confidence=str(e)
         )
     
-@app.route("/test_fault")
-def test_fault():
+@app.route("/generate_fault")
+def generate_fault():
     import numpy as np
-    signal = (2*np.sin(2*np.pi*500*np.arange(2048)/48000)
-              + 0.5*np.random.randn(2048))
+    
+    # Simulated faulty vibration signal
+    t = np.arange(WINDOW_SIZE)
+    signal = (2*np.sin(2*np.pi*500*t/SAMPLING_FREQUENCY)
+              + 0.5*np.random.randn(WINDOW_SIZE))
+    
     features = extract_features_from_signal(signal)
     prediction = model.predict(features)[0]
-    return "Fault Detected" if prediction == 1 else "Healthy"
+    probability = model.predict_proba(features)[0].max()
+
+    status = "Healthy" if prediction == 0 else "Fault Detected"
+
+    return render_template(
+        "index.html",
+        prediction=status,
+        confidence=round(float(probability), 3)
+    )
 
 
 if __name__ == "__main__":
