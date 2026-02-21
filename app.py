@@ -74,6 +74,15 @@ def predict():
             prediction="Error",
             confidence=str(e)
         )
+    
+@app.route("/test_fault")
+def test_fault():
+    import numpy as np
+    signal = (2*np.sin(2*np.pi*500*np.arange(2048)/48000)
+              + 0.5*np.random.randn(2048))
+    features = extract_features_from_signal(signal)
+    prediction = model.predict(features)[0]
+    return "Fault Detected" if prediction == 1 else "Healthy"
 
 
 if __name__ == "__main__":
