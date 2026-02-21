@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bearing Anomaly Detection</title>
+</head>
+<body>
+
+<h2>Industrial Motor Anomaly Detection</h2>
+
+<form action="/predict" method="post">
+    <label>Enter 2048 Accelerometer Values (comma separated):</label><br><br>
+    <textarea name="signal" rows="10" cols="100"></textarea><br><br>
+    <button type="submit">Predict</button>
+</form>
+
+{% if prediction %}
+    <h3>Prediction: {{ prediction }}</h3>
+    <h4>Confidence: {{ confidence }}</h4>
+{% endif %}
+
+</body>
+</html>
